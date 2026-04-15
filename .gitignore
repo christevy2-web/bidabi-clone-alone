@@ -6,6 +6,6 @@ __pycache__/
 *.pyc
 
 # Dossiers de données (Gérés par DVC, pas par Git)
-data/raw/
+data/raw/images/
 data/interim/
-
+!data/raw.dvc
