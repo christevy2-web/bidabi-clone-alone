@@ -9,4 +9,4 @@ __pycache__/
 data/raw/
 data/raw/images/
 !data/raw.dvc
-data/localstore/
+data/localstore/test_env/
