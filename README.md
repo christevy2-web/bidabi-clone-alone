@@ -128,3 +128,69 @@ Ajouter le paramètre labels= dans classification_report lorsque le dataset est 
 * génère toutes les métriques avancées
 * produit les visualisations (confusion matrix, ROC, t‑SNE, UMAP)
 * identifie les images les plus difficiles (hardest samples)
+
+## Structure du pipeline
+Le script train.py réalise les opérations suivantes :
+
+Chargement du dataset : les images brutes sont lues depuis data/raw/images/ où chaque sous-dossier correspond à une classe.
+
+Augmentations : flip horizontal, rotation aléatoire, jitter de couleur et normalisation (moyenne et écart-type d’ImageNet).
+
+Séparation des ensembles : 70% pour l’entraînement, 15% pour la validation, 15% pour le test.
+
+Modèle : ResNet-18 pré-entraîné sur ImageNet, avec la dernière couche adaptée au nombre de classes du projet.
+
+Optimisation : Adam (learning rate = 0.001), scheduler ReduceLROnPlateau (patience=3).
+
+Suivi des métriques : accuracy sur la validation, courbes d’apprentissage, rapport de classification sur le test.
+
+Sauvegarde : le meilleur modèle (selon l’accuracy validation) est stocké dans models/best_model.pth.
+
+# 2 Versionnement des données et du modèle
+Dataset RAW : versionné avec DVC (fichier data/raw.dvc). Pour le restaurer : dvc pull.
+
+Modèle entraîné : versionné avec DVC (models/best_model.pth.dvc). Récupération identique via dvc pull.
+
+# 3 Reproductibilité
+Un environnement vierge peut reproduire exactement l’entraînement :
+
+bash
+git clone https://github.com/christevy2-web/bidabi-clone-alone.git
+cd bidabi-clone-alone
+dvc pull
+python -m venv .venv && source .venv/bin/activate   # ou .venv\Scripts\activate sous Windows
+pip install -r requirements.txt
+python train.py
+4.4 Tag et release GitHub
+Tag Git : v3.0 – git tag -a v3.0 -m "Version 3.0 : pipeline complet"
+
+Release GitHub : disponible sur l’onglet Releases, contenant :
+
+Description du pipeline d’entraînement
+
+Version du dataset utilisée (commit DVC associé)
+
+Modèle entraîné (lien vers le fichier .dvc)
+
+Instructions complètes pour reproduire l’entraînement
+
+## Niveau de poste visé
+La réalisation complète de ce projet – depuis la collecte de données, l’organisation d’un pipeline reproductible, le versionnement du dataset avec DVC, l’entraînement d’un modèle de classification jusqu’à la création d’une version stabilisée (v3.0) – correspond aux compétences attendues d’un profil Junior à Intermédiaire dans les métiers du Machine Learning.
+
+Compétences démontrées
+Domaine	Compétences
+Gestion des données	Scrapping, organisation data/raw/, versionnement DVC
+Pipeline ML	Augmentations, split train/val/test, fine-tuning ResNet-18, suivi métriques
+Reproductibilité	Environnements virtuels, requirements.txt, DVC pour données et modèle
+Versionnement	Git (commits, tags, releases) + DVC
+Documentation	Release GitHub détaillée, instructions claires
+Postes visés
+Machine Learning Engineer Junior – capable de mettre en place un pipeline complet, gérer les données, versionner le code et entraîner un modèle de base.
+
+Data Scientist Junior – maîtrise de la préparation des données, classification supervisée, évaluation et reproductibilité.
+
+MLOps Engineer Junior – connaissance de DVC, gestion des environnements, reproductibilité et structuration d’un projet ML.
+
+AI/ML Research Assistant – capacité à préparer des datasets, entraîner des modèles et documenter un pipeline reproductible.
+
+En résumé : Ce projet atteste d’une capacité à produire une version complète, reproductible et documentée d’un pipeline d’apprentissage, compétence clé pour un poste opérationnel de niveau junior en Machine Learning ou MLOps.
